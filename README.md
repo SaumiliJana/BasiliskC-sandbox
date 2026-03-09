@@ -1,6 +1,6 @@
 # My Sandbox
 Welcome to the README of my sandbox.
-Here I provide an overview of the projects under [https://basilisk.fr/sandbox/saumilij/](). I mainly work with surface tension driven and viscoelastic flows.
+Here I provide an overview of the projects in my [Balsilisk-C sandbox](https://basilisk.fr/sandbox/saumilij/). I mainly work with surface tension driven and viscoelastic flows.
 
 ## Repositories
 * [Rayleigh-Plateau pinchoff](pinchoff/pinchoff.c)
