@@ -52,7 +52,7 @@ We solve the axisymmetric, incompressible Navier-Stokes equations with two phase
 
 //declarations
 int MAXlevel, MINlevel;
-int maxlimit = 18;//maximum limit for grid MAXlevel at pinchoff 
+int maxlimit = 15;//maximum limit for grid MAXlevel at pinchoff 
 double tmax, Oh1, Ldomain, epsilon;
 //const double tmax = 10. [0, 1];
 //Boundary conditions
@@ -64,7 +64,7 @@ p[top] = dirichlet(0);
 
 int main(int argc, char const *argv[]){
   //assignments
-  MAXlevel = 11; //for grid refinement
+  MAXlevel = 9; //for grid refinement
   MINlevel = max(6, (MAXlevel-4));//for grid refinement
   tmax = 10.0; 
   //Ldomain = 2*pi; 
@@ -115,7 +115,7 @@ event init (t = 0){
 /** 
 ### Adaptive Mesh refinement 
 We adapt the mesh according to the errors of the volume fraction field, velocity and the interface curvature. 
-We check if the filament breaks or not. If the filament is not broken, we increase MAXlevel as the filament thins down upto a maximum level of 18, until breakup, and after breakup continue using the minimum value of MAXlevel.
+We check if the filament breaks or not. If the filament is not broken, we increase MAXlevel as the filament thins down upto a maximum level of 15, until breakup, and after breakup continue using the minimum value of MAXlevel.
 */ 
 
 event adapt (i++){
@@ -129,7 +129,7 @@ event adapt (i++){
   if (!broken)
     broken = y_min < 1./(1 << MAXlevel);
 
-  if(broken){ MAXlevel = 10;}
+  if(broken){ MAXlevel = 9;}
   else{
     //If filament is not broken, and the height of the interface is less than ~5*grid cells, we increment the MAXlevel by 1 (upto a maximum limit)
     while(((statsf(Y).min)<(5*L0/(1<<MAXlevel))) && (MAXlevel<maxlimit)){
@@ -208,14 +208,14 @@ event movie (t = 9.6; t += 0.0002; t <= 9.71)
 /**
 ## Results
 The animation shows how adaptive mesh refinement tracks high curvatures and short
-timescales near pinch-off. Up to 18 levels of refinement capture roughly four
+timescales near pinch-off. Up to 15 levels of refinement capture roughly four
 orders of magnitude in spatial scales.
 
 ![Mesh and interface evolution](pinchoff/movie1.mp4)(width="50%")
 
 The scaling plots below show the theoretical fits. The fit is excellent over
 at least four orders of magnitude. Departures from power laws near pinch-off
-result from saturation of spatial resolution (grid size $L_{domain}/2^{18}$).
+result from saturation of spatial resolution (grid size $L_{domain}/2^{15}$).
 ~~~gnuplot Evolution of the minimum radius
 reset
 # We define the breakup time as the time when the axial velocity is maximum
@@ -228,7 +228,7 @@ set logscale
 set format x '10^{%L}'
 set format y '10^{%L}'
 fit [1e-5:1e-1] a*x**(2./3.) 'log' u (t0 - $3):4 via a
-plot [1e-7:][6.2831/2**18:]'log' u (t0 - $3):4 ps 0.5 t '', a*x**(2./3.) t 'x^{2/3}'
+plot [1e-6:][6.2831/2**15:]'log' u (t0 - $3):4 ps 0.5 t '', a*x**(2./3.) t 'x^{2/3}'
 ~~~
  */
 
